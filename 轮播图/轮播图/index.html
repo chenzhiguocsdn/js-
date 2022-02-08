@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>轮播图</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      .swiper-wrapper {
+        position: relative;
+        width: 500px;
+        height: 200px;
+        margin: 0 auto;
+      }
+
+      .swiper-slide {
+        position: absolute;
+        width: 500px;
+        height: 200px;
+        color: #fff;
+        font-size: 20px;
+        opacity: 0;
+        transition: all 1s;
+      }
+
+      .swiper-slide:nth-child(1) {
+        background-color: #7fffd4;
+      }
+
+      .swiper-slide:nth-child(2) {
+        background-color: red;
+      }
+
+      .swiper-slide:nth-child(3) {
+        background-color: pink;
+      }
+
+      .swiper-slide.active {
+        opacity: 1;
+        z-index: 10;
+      }
+
+      .swiper-button-prev {
+        position: absolute;
+        top: 50%;
+        margin-top: -14px;
+        color: #fff;
+        z-index: 100;
+      }
+
+      .swiper-button-prev:hover {
+        cursor: pointer;
+      }
+
+      .swiper-button-next:hover {
+        cursor: pointer;
+      }
+
+      .swiper-button-next {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        margin-top: -14px;
+        color: #fff;
+        z-index: 100;
+      }
+
+      .swiper-pagination {
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        z-index: 100;
+      }
+
+      .swiper-pagination li {
+        float: left;
+        list-style: none;
+        margin-left: 10px;
+      }
+
+      .swiper-pagination li:hover {
+        cursor: pointer;
+        color: violet;
+      }
+
+      .paginationDot.active {
+        color: violet;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="swiper-container">
+      <!-- 轮播图的位置 -->
+      <div class="swiper-wrapper">
+        <div class="swiper-slide active">0</div>
+        <div class="swiper-slide">1</div>
+        <div class="swiper-slide">2</div>
+      <!-- 小圆点位置，用数字代替了小圆点 -->
+        <div class="swiper-pagination">
+          <ul>
+            <li class="paginationDot active" data-list="0">0</li>
+            <li class="paginationDot" data-list="1">1</li>
+            <li class="paginationDot" data-list="2">2</li>
+          </ul>
+        </div>
+        <!-- 左箭头 -->
+        <div class="swiper-button-prev"><</div>
+        <!-- 右箭头 -->
+        <div class="swiper-button-next">></div>
+      </div>
+    </div>
+    <script>
+      // 左边的按钮变量
+      var pButton = document.getElementsByClassName('swiper-button-prev')
+      // 右边的按钮变量
+      var nButton = document.getElementsByClassName('swiper-button-next')
+      // 小圆点变量
+      var paginationDot = document.getElementsByClassName('paginationDot')
+      // 图片滑块变量
+      var swiperSlide = document.getElementsByClassName('swiper-slide')
+      // 图片索引位置
+      var index = 0
+      // 计时器时间
+      var time = 0
+
+      // 切换到上一张图片的方法
+      function prevButton() {
+        // 停切效果
+        time = 0
+        //  清除class属性active
+        clearF()
+        // 图片索引减一
+        index--
+        // 进行循环切换
+        if (index < 0) {
+          index += 3
+          index = index % 3
+        } else {
+          index = index
+        }
+        // 调用切换图片函数
+        changeImg()
+      }
+
+      // 清除class属性active
+      function clearF() {
+        // 把上一个小圆点active清空
+        paginationDot[index].className = 'paginationDot'
+        // 把上一个元素的active清空
+        swiperSlide[index].className = 'swiper-slide'
+      }
+
+      // 切换到下一张图片的方法
+      function nextButton() {
+      // 停切效果
+        time = 0
+       
+        //  清除class属性active
+        clearF()
+        // 索引++
+        index++
+        // 进行循环切换
+        if (index % 3 === 0) {
+          index = 0
+        }
+        // 调用切换图片方法
+        changeImg()
+      }
+
+      //换图片、小圆点的方法
+      function changeImg() {
+        // 图片切换
+        swiperSlide[index].className = 'swiper-slide active'
+        // 小圆点切换
+        paginationDot[index].className = 'paginationDot active'
+      }
+
+      // 事件监听
+      pButton[0].addEventListener('click', prevButton)
+      nButton[0].addEventListener('click', nextButton)
+      // 给每个小圆点一个监听事件
+      for (var i = 0; i < paginationDot.length; i++) {
+        paginationDot[i].addEventListener('click', function () {
+          // 停切效果
+          time = 0
+          // 获取自定义属性的值
+          var x = this.getAttribute('data-list')
+          //  清除class属性active
+          clearF()
+          // 把x赋值给index
+          index = x
+          // 调用切换图片方法
+          changeImg()
+        })
+      }
+      // 计时器
+      var imgSlide = setInterval(function () {
+        time++
+        if(time === 20) {
+          nextButton()
+          time = 0
+        }
+
+      }, 100)
+    </script>
+  </body>
+</html>
