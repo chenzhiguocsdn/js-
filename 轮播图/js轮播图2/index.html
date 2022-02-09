@@ -214,6 +214,7 @@
     // 给每个圆点添加 click 事件
     for(let i = 0; i < min.length; i++) {
       min[i].addEventListener('click', () => {
+        last = index
         index = i
         position()
         clearInterval(time)
